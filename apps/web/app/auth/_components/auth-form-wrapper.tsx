@@ -28,8 +28,8 @@ export const AuthFormWrapper = ({
     showSocials
 }: AuthFormWrapperProps) => {
     return (
-        <Card className="border-none bg-transparent w-full shadow-none">
-            <CardHeader className="space-y-3">
+        <Card className="pb-12 pt-8 bg-transparent w-full border-none shadow-none">
+            <CardHeader className="space-y-4">
                 <div className="flex items-center gap-x-2">
                     <Image 
                         src={"/logo.svg"}
