@@ -12,8 +12,7 @@ const AuthLayout = ({
     const colors = ["#DC2626", "#E11D48", "#ef4444"]
     const color = useMotionValue(colors[0])
     const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #09090B 50%, ${color})`
-    const border = useMotionTemplate`1px solid ${color}`
-    const boxShadow = useMotionTemplate`0px 4px 24px ${color}`
+
 
     useEffect(() => {
         animate(color, colors, {

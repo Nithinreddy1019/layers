@@ -1,6 +1,7 @@
 import { Loginform } from "../_components/login-form";
 
 const LoginPage = () => {
+    
     return (
         <section className="h-full flex">
             <div className="hidden lg:block lg:flex-1 relative">

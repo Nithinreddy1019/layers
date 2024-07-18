@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "@repo/ui/globals.css";
+import "@repo/ui/globals.css"
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@repo/ui/theme-provider";
 const inter = Inter({
@@ -12,12 +12,6 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        media: "(prefers-color-scheme: light)",
-        url: "/logo.svg",
-        href: "/logo.svg"
-      },
-      {
-        media: "(prefers-color-scheme: dark)",
         url: "/logo.svg",
         href: "/logo.svg"
       }

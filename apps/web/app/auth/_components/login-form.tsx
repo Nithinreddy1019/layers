@@ -15,6 +15,7 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Button } from "@repo/ui/components/button";
+import {motion} from "framer-motion";
 
 
 export const Loginform = () => {
@@ -32,7 +33,14 @@ export const Loginform = () => {
     }
 
     return (
-        <div className="flex flex-col items-center w-[350px] md:w-[50%] lg:w-2/3">
+        <motion.div
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            transition={{
+                duration: 1.4
+            }} 
+            className="flex flex-col items-center w-[350px] md:w-[50%] lg:w-2/3">
             <AuthFormWrapper
                 headerLabel="Login to continue to Blinde"
                 backButtonLabel="Don't have an account?"
@@ -94,6 +102,6 @@ export const Loginform = () => {
                     </form>
                 </Form>
             </AuthFormWrapper>
-        </div>
+        </motion.div>
     )
 }

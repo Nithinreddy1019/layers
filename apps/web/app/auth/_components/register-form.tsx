@@ -15,6 +15,7 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Button } from "@repo/ui/components/button";
+import { motion } from "framer-motion";
 
 
 export const Registerform = () => {
@@ -33,9 +34,16 @@ export const Registerform = () => {
     }
 
     return (
-        <div className="flex flex-col items-center w-[350px] md:w-[50%] lg:w-2/3">
+        <motion.div 
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            transition={{
+                duration: 1.4
+            }}
+            className="flex flex-col items-center w-[350px] md:w-[50%] lg:w-2/3">
             <AuthFormWrapper
-                headerLabel="register to continue to blinde"
+                headerLabel="Register to continue to blinde"
                 backButtonLabel="Already have an account?"
                 backButtonHref="/auth/login"
                 showSocials
@@ -114,6 +122,6 @@ export const Registerform = () => {
                     </form>
                 </Form>
             </AuthFormWrapper>
-        </div>
+        </motion.div>
     )
 }
