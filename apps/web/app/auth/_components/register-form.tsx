@@ -114,7 +114,7 @@ export const Registerform = () => {
                         </div>
                         <Button 
                             type="submit"
-                            className="w-full text-sm font-bold" 
+                            className="w-full text-sm font-semibold" 
                             size="sm"
                         >
                             Register

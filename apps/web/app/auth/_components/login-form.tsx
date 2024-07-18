@@ -94,7 +94,7 @@ export const Loginform = () => {
                         </div>
                         <Button 
                             type="submit"
-                            className="w-full text-sm font-bold" 
+                            className="w-full text-sm font-semibold" 
                             size="sm"
                         >
                             Login
