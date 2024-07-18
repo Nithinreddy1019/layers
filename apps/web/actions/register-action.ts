@@ -35,6 +35,9 @@ export const RegisterAction = async (values: z.infer<typeof RegisterSchema>) => 
             }
         });
 
+        
+        //WIP: Email verification
+
         return { success: "Registered successfully. Login now" }
     } catch (error) {
         return { error: "something went wrong" }
