@@ -16,9 +16,17 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { Button } from "@repo/ui/components/button";
 import {motion} from "framer-motion";
+import { FormError } from "./form-error";
+import { FormSuccess } from "./form-success";
+import { useState, useTransition } from "react";
+import { LoginAction } from "~/actions/login-action";
 
 
 export const Loginform = () => {
+
+    const [error, setError] = useState<string | undefined>("");
+    const [success, setSuccess] = useState<string| undefined>("");
+    const [isPending, setTransition] = useTransition();
 
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
@@ -29,7 +37,17 @@ export const Loginform = () => {
     })
 
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-        console.log(values);
+        setError("");
+        setSuccess("")
+
+        setTransition(() => {
+            LoginAction(values)
+            .then((data) => {
+                setError(data.error);
+                setSuccess(data.success);
+            })
+        })
+        
     }
 
     return (
@@ -66,6 +84,7 @@ export const Loginform = () => {
                                                 {...field}
                                                 type="email"
                                                 placeholder="email@gmail.com"
+                                                disabled={isPending}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -85,6 +104,7 @@ export const Loginform = () => {
                                                 {...field}
                                                 type="password"
                                                 placeholder="******"
+                                                disabled={isPending}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -92,10 +112,13 @@ export const Loginform = () => {
                                 )}
                             />
                         </div>
+                        <FormError message={error}/>
+                        <FormSuccess message={success}/>
                         <Button 
                             type="submit"
                             className="w-full text-sm font-semibold" 
                             size="sm"
+                            disabled={isPending}
                         >
                             Login
                         </Button>
