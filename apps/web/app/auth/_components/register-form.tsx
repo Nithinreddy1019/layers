@@ -102,7 +102,7 @@ export const Registerform = () => {
                                         <FormControl>
                                             <Input 
                                                 {...field}
-                                                type="email"
+                                                type="text"
                                                 placeholder="what's your name?"
                                                 disabled={isPending}
                                             />

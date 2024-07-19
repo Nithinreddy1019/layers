@@ -1,11 +1,13 @@
 export const publicRoutes = [
     "/",
+    "/auth/new-verification"
 ]
 
 
 export const authenticationRoutes = [
     "/auth/login",
-    "/auth/register"
+    "/auth/register",
+    "/auth/error"
 ]
 
 export const authenticationApiRoutes = "/api/auth"

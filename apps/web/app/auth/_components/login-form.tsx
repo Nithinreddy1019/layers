@@ -49,8 +49,8 @@ export const Loginform = () => {
         setTransition(() => {
             LoginAction(values)
             .then((data) => {
-                setError(data.error);
-                setSuccess(data.success);
+                setError(data?.error);
+                setSuccess(data?.success);
             })
         })
         
