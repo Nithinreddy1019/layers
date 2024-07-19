@@ -4,6 +4,8 @@ import { db } from "@repo/db/db";
 import { RegisterSchema } from "@repo/schemas/user-schema";
 import * as z from "zod";
 import * as bcrypt from "bcryptjs";
+import { sendVerificationEmail } from "~/lib/emails";
+import { generateVerificationtoken } from "~/lib/tokens";
 
 
 
@@ -38,7 +40,13 @@ export const RegisterAction = async (values: z.infer<typeof RegisterSchema>) => 
         
         //WIP: Email verification
 
-        return { success: "Registered successfully. Login now" }
+        const verificationToken = await generateVerificationtoken(user.email);
+        const sendMail = await sendVerificationEmail({
+            mailId: user.email,
+            token: verificationToken.token
+        })
+
+        return { success: "Verification email sent successfully." }
     } catch (error) {
         return { error: "something went wrong" }
     }
