@@ -19,7 +19,7 @@ export const Sidebar = () => {
 
     return (
         <aside 
-            className={cn("h-full flex-col items-center hidden md:flex")}
+            className={cn("h-full flex-col items-center hidden md:flex border-r-[1px] dark:border-none")}
         >
 
             <div className="flex items-center justify-between pr-2 w-full">
