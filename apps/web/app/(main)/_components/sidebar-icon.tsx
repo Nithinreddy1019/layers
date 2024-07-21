@@ -27,7 +27,9 @@ export const SidebarIcon = ({
                 <TooltipTrigger asChild>
                         <Link href={iconRedirect}>
                             {Icon}
+                            
                         </Link>
+                        
                 </TooltipTrigger>
                 <TooltipContent 
                     side="right"

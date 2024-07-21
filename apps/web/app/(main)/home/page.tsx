@@ -7,20 +7,8 @@ const HomePage = async () => {
    
 
     return (
-        <div>
-            {JSON.stringify(session)}
-
-            <form
-                action={async () => {
-                    "use server"
-
-                    await signOut()
-                }}
-            >
-                <Button type="submit">
-                    Signout
-                </Button>
-            </form>
+        <div className="">
+            
         </div>
     );
 }
