@@ -8,15 +8,18 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useActivePage } from "~/hooks/use-activepage";
 import { useSidebar } from "~/hooks/use-sidebar"
 
 export const Navigation = () => {
 
     const sidebarAtom = useSidebar();
     const router = useRouter();
+    const activePageAtom = useActivePage();
 
-    const handleNavigation = (link: string) => {
+    const handleNavigation = (link: string, pageName: string) => {
         sidebarAtom.onClose();
+        activePageAtom.setActivePage(pageName)
         router.push(link);
     }
 
@@ -44,35 +47,35 @@ export const Navigation = () => {
                 <Button 
                     variant="link" 
                     className="p-0 text-lg font-semibold"
-                    onClick={() => handleNavigation("/home")}
+                    onClick={() => handleNavigation("/home", "Home")}
                 >
                     Home
                 </Button>
                 <Button 
                     variant="link" 
                     className="p-0 text-lg font-semibold"
-                    onClick={() => handleNavigation("/workflows")}
+                    onClick={() => handleNavigation("/workflows", "Workflows")}
                 >
                     Workflows
                 </Button>
                 <Button 
                     variant="link" 
                     className="p-0 text-lg font-semibold"
-                    onClick={() => handleNavigation("/settings")}
+                    onClick={() => handleNavigation("/settings", "Settings")}
                 >
                     Settings
                 </Button>
                 <Button 
                     variant="link" 
                     className="p-0 text-lg font-semibold"
-                    onClick={() => handleNavigation("/categories")}
+                    onClick={() => handleNavigation("/categories", "Categories")}
                 >
                     Categories
                 </Button>
                 <Button 
                     variant="link" 
                     className="p-0 text-lg font-semibold"
-                    onClick={() => handleNavigation("/logs")}
+                    onClick={() => handleNavigation("/logs", "Logs")}
                 >
                     Logs
                 </Button>
