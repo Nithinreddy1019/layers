@@ -24,7 +24,7 @@ export const Navigation = () => {
     return (
         // WIP:: Smoother animation
         <div
-            className={cn("md:hidden hidden absolute left-0 h-full w-screen z-50 bg-background transition-all translate-x-96 duration-2000", sidebarAtom.isExpanded && "flex flex-col items-start gap-6 translate-x-0")}>
+            className={cn("md:hidden hidden left-0 h-full w-screen z-50 bg-background transition-all translate-x-96 duration-2000 fixed top-14", sidebarAtom.isExpanded && "flex flex-col items-start gap-6 translate-x-0")}>
             <div className="flex items-center justify-between w-full px-4 py-2 relative">
                 <Link href={"/home"} className="flex flex-col items-center pt-2">
                     <Image 
@@ -37,13 +37,7 @@ export const Navigation = () => {
                     <p className="text-xs text-[#DC2626] font-bold">Blinde.</p>
                 </Link>
                 
-                <div 
-                    role="button"
-                    onClick={sidebarAtom.onClose}
-                    className="absolute top-4 right-4"
-                >
-                    <X />
-                </div>
+                
             </div>
 
             <div className="flex flex-col items-start gap-y-4 px-4 flex-1">
