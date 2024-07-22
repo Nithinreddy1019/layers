@@ -12,20 +12,23 @@ interface SidebarIconProps {
     icon: React.ReactNode,
     iconName: string,
     iconRedirect: string,
-    isActive: boolean
+    onClick: (pageName: string) => void
 }
 
 export const SidebarIcon = ({
     icon: Icon,
     iconName,
     iconRedirect,
-    isActive
+    onClick
 }: SidebarIconProps) => {
     return (
         <TooltipProvider>
             <Tooltip delayDuration={0}>
                 <TooltipTrigger asChild>
-                        <Link href={iconRedirect}>
+                        <Link 
+                            href={iconRedirect}
+                            onClick={() => onClick(iconName)}
+                        >
                             {Icon}
                         </Link>    
                 </TooltipTrigger>

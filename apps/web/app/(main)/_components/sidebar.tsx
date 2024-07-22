@@ -11,11 +11,17 @@ import Logs from "./icons/clipboard"
 import Category from "./icons/category"
 import { usePathname } from "next/navigation"
 import { cn } from "@repo/ui/lib/utils"
+import { useActivePage } from "~/hooks/use-activepage"
 
 
 export const Sidebar = () => {
 
     const pathname = usePathname();
+    const activePageAtom = useActivePage();
+
+    const onClick = (pageName: string) => {
+        activePageAtom.setActivePage(pageName);
+    }
 
     return (
         <aside 
@@ -40,31 +46,31 @@ export const Sidebar = () => {
                     icon={<Home selected={pathname === "/home"}/>}
                     iconName="Home"
                     iconRedirect="/home"
-                    isActive={pathname === "/home"}
+                    onClick={onClick}
                 />
                 <SidebarIcon 
                     icon={<Workflows selected={pathname === "/workflows"}/>}
                     iconName="Workflows"
                     iconRedirect="/workflows"
-                    isActive={pathname === "/workflows"}
+                    onClick={onClick}
                 />
                 <SidebarIcon 
                     icon={<Settings selected={pathname === "/settings"}/>}
                     iconName="Settings"
                     iconRedirect="/settings"
-                    isActive={pathname === "/settings"}
+                    onClick={onClick}
                 />
                 <SidebarIcon 
                     icon={<Category selected={pathname === "/categories"}/>}
                     iconName="Categories"
                     iconRedirect="/categories"
-                    isActive={pathname === "/categories"}
+                    onClick={onClick}
                 />
                 <SidebarIcon 
                     icon={<Logs selected={pathname === "/logs"}/>}
                     iconName="Logs"
                     iconRedirect="/logs"
-                    isActive={pathname === "/logs"}
+                    onClick={onClick}
                 />
             </div>
 

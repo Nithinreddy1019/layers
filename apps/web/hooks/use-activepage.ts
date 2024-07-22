@@ -8,6 +8,6 @@ type ActivepageStore = {
 }
 
 export const useActivePage = create<ActivepageStore>((set, get) => ({
-    activePage: "",
+    activePage: "Home",
     setActivePage: (page) => set({ activePage: page })
 }))
