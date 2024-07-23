@@ -9,6 +9,7 @@ export const getUserByEmail = async (email: string) => {
 
         return existingUser;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }
