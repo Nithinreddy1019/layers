@@ -1,4 +1,5 @@
 import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
 import { auth, signOut } from "~/auth";
 
 const HomePage = async () => {
@@ -8,79 +9,18 @@ const HomePage = async () => {
 
     return (
         <div className="">
-            <p>d</p>
-            <br></br>
-            <p>d</p>
-            <br></br>
-            <p>d</p>
-            <br></br>
-            <p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br><p>d</p>
-            <br></br>
+            <h1 className="text-7xl font-bold">How is it not working?</h1>
+            <h1 className="text-7xl font-bold">How is it not working?</h1>
+
+            <h1 className="text-7xl font-bold">How is it not working?</h1>
+
+            <h1 className="text-7xl font-bold">How is it not working?</h1>
+
+            <h1 className="text-7xl font-bold">How is it not working?</h1>
+
+
         </div>
-    );
+    )
 }
  
 export default HomePage;

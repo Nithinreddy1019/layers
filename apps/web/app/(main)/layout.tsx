@@ -6,13 +6,15 @@ const MainLayout = ({
     children
 }: { children: React.ReactNode }) => {
     return (
-        <main className="h-screen flex">
+        <main className="h-screen flex w-screen">
+            <div className="">
                 <Sidebar />
                 <Navigation />
-            <div className="h-full flex-1">
                 <Navbar />
-                <div className="absolute md:left-14 top-14">
-                {children}
+            </div>
+            <div className="flex-1 overflow-y-auto">
+                <div className="relative top-14 bg-">
+                    {children}
                 </div>
             </div>
         </main>

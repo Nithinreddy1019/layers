@@ -24,8 +24,9 @@ export const Sidebar = () => {
     }
 
     return (
+        <>
         <aside 
-            className={cn("h-full flex-col items-center hidden md:flex border-r-[1px] dark:border-none fixed md:top-0 bg-background")}
+            className={cn("h-full flex-col items-center hidden md:flex bg-background")}
         >
 
             <div className="flex items-center justify-between pr-2 w-full">
@@ -78,5 +79,6 @@ export const Sidebar = () => {
                 <ModeToggle />
             </div>
         </aside>
+        </>
     )
 }

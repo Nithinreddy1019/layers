@@ -16,7 +16,7 @@ export const Navbar = () => {
     const scrolled = useScrollTop(10);
 
     return (
-        <nav className={cn("flex items-center justify-between h-14 px-4 w-full fixed top-0 md:left-14 bg-background z-50", scrolled && "shadow-sm")}>
+        <nav className={cn("flex items-center justify-between h-14 px-4 w-full fixed top-0 md:left-14 bg-background z-50", scrolled && "shadow-md border-b")}>
 
             <AnimatePresence>
                 <motion.div 
@@ -26,7 +26,7 @@ export const Navbar = () => {
                     transition={{
                         duration: 1
                     }}
-                    className="text-xl font-medium">
+                    className="text-3xl font-medium px-2">
                     {activePageAtom.activePage}
                 </motion.div>
             </AnimatePresence>
