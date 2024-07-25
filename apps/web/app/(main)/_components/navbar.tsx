@@ -15,9 +15,9 @@ export const Navbar = () => {
 
     const scrolled = useScrollTop(10);
 
-    return (
-        <nav className={cn("flex items-center justify-between h-14 px-4 w-full fixed top-0 md:left-14 bg-background z-50", scrolled && "shadow-md border-b")}>
 
+    return (
+        <nav className={cn("flex items-center justify-between h-14 px-4 w-full fixed top-0 md:left-14 bg-background z-50 ", scrolled && "shadow-md border-b")}>
             <AnimatePresence>
                 <motion.div 
                     initial={{opacity:0}}
