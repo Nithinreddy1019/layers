@@ -6,6 +6,12 @@ export async function POST(req: Request, res: Response) {
     const body = await req.json();
     const email = body.email;
 
+    if(!email) {
+        return new Response("No email givev", {
+            status: 411
+        })
+    }
+
     try {
         const user = await db.user.findUnique({
             where: { email }
@@ -29,6 +35,4 @@ export async function POST(req: Request, res: Response) {
         });
     }
 
-
-    return new Response(email);
 }

@@ -19,6 +19,7 @@ import { Button } from "@repo/ui/components/button";
 import { useTransition } from "react";
 import { Loader } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useGetUser } from "~/hooks/useGetUser";
 
 
 export const ProfileForm = () => {
@@ -26,12 +27,13 @@ export const ProfileForm = () => {
     const [isPending, setTransition] = useTransition();
     const session = useSession();
 
-    
+    const email = session.data?.user.email as string;
+    const { data, isLoading } = useGetUser(email);
 
     const form = useForm<z.infer<typeof ProfileSchema>>({
         resolver: zodResolver(ProfileSchema),
         defaultValues: {
-            email: session.data?.user.email as string,
+            email: "",
             username: "",
             password: ""
         }
@@ -42,7 +44,13 @@ export const ProfileForm = () => {
 
     }
 
-
+    if(isLoading || !email) {
+        return (
+            <div>
+                Loading...
+            </div>
+        )
+    }
 
     return (
         <>
@@ -71,6 +79,7 @@ export const ProfileForm = () => {
                                             <Input 
                                                 {...field}
                                                 type="email"
+                                                value={data ? data.email : ""}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -89,6 +98,7 @@ export const ProfileForm = () => {
                                             <Input 
                                                 {...field}
                                                 type="text"
+                                                value={data ? data.username : ""}
                                             />
                                         </FormControl>
                                     </FormItem>
