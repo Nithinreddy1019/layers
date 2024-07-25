@@ -18,14 +18,14 @@ export const ProfileCardWrapper = ({
     children
 }: ProfileCardWrapperProps) => {
     return (
-        <Card className="border-none bg-transparent">
+        <Card className="border-none bg-transparent h-full">
             <CardHeader>
                 <div className="flex flex-col items-start gap-y-1">
                     <h1 className="text-2xl font-medium">{cardHeader}</h1>
                     <p className="text-sm font-medium">{cardSubHeader}</p>
                 </div>
             </CardHeader>
-            <CardContent className="sm:w-2/3 md:w-[50%]">
+            <CardContent className="max-w-xl space-y-4">
                 {children}
             </CardContent>
         </Card>
