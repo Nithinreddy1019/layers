@@ -27,5 +27,6 @@ export const ProfileSchema = z.object({
     email: z.string().email(),
     username: z.string().optional(),
     password: z.string().optional(),
-    image: z.string().optional()
+    image: z.string().optional(),
+    credentials: z.boolean()
 });
