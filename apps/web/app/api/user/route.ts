@@ -27,7 +27,8 @@ export async function POST(req: Request, res: Response) {
             id: user.id,
             username: user.name,
             email: user.email,
-            image: user.image
+            image: user.image,
+            credentials: user.password ? true : false
         }, { status: 200 });
     } catch (error) {
         return new Response("Internal server error", {
