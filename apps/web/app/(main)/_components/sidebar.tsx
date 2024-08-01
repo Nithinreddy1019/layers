@@ -27,7 +27,7 @@ export const Sidebar = () => {
             className={cn("h-full flex-col items-center hidden md:flex bg-background")}
         >
 
-            <div className="flex items-center justify-between pr-2 w-full">
+            <div className="flex items-center justify-between pr-2 pt-2 w-full">
                 <Link href={"/home"} className="flex flex-col items-center pl-2 pt-2">
                     <Image 
                         src={"/logo.svg"}

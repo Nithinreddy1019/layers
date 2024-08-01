@@ -15,9 +15,6 @@ export const ProfileForm = () => {
 
     const [isPending, setTransition] = useTransition();
 
-    const [passwordChangeIsVisible, setPasswordChangeIsvisible] = useState(false);
-    const [usernamechangeIsvisible, setUsernameChangeIsvisible] = useState(false);
-
     const session = useSession();
     const email = session.data?.user.email as string;
     const { data, isLoading } = useGetUser(email);
