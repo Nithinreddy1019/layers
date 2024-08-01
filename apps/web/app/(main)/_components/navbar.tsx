@@ -2,22 +2,23 @@
 import { Input } from "@repo/ui/components/input";
 import { Book, Menu, Search, X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useActivePage } from "~/hooks/use-activepage";
 import { useSidebar } from "~/hooks/use-sidebar";
 import { AnimatePresence, motion } from "framer-motion";
-import { useScrollTop } from "~/hooks/use-scroll-top";
 import { cn } from "@repo/ui/lib/utils";
+import { useState } from "react";
+import path from "path";
 
 export const Navbar = () => {
 
     const sidebarAtom = useSidebar();
-    const activePageAtom = useActivePage();
+    const pathname = usePathname();
 
-    const scrolled = useScrollTop(10);
+    const [ page, setPage] = useState<string>("");
+
 
 
     return (
-        <nav className={cn("flex items-center justify-between h-14 px-4 w-full fixed top-0 md:left-14 bg-background z-50 ", scrolled && "shadow-md border-b")}>
+        <nav className={cn("flex items-center justify-between h-16 px-4 w-full fixed top-0 md:left-14 bg-background z-50 ")}>
             <AnimatePresence>
                 <motion.div 
                     initial={{opacity:0}}
@@ -27,7 +28,11 @@ export const Navbar = () => {
                         duration: 1
                     }}
                     className="text-3xl font-medium px-2">
-                    {activePageAtom.activePage}
+                        {pathname.startsWith("/home") && "Home"}
+                        {pathname.startsWith("/workflows") && "Workflows"}
+                        {pathname.startsWith("/settings") && "Settings"}
+                        {pathname.startsWith("/logs") && "Logs"}
+                        {pathname.startsWith("/categories") && "Categories"}
                 </motion.div>
             </AnimatePresence>
 

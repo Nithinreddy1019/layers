@@ -13,7 +13,7 @@ const MainLayout = ({
                 <Navbar />
             </div>
             <div className="flex-1 overflow-y-auto">
-                <div className="relative top-14 h-full">
+                <div className="relative top-16 h-full">
                     {children}
                 </div>
             </div>

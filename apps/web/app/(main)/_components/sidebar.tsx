@@ -11,16 +11,14 @@ import Logs from "./icons/clipboard"
 import Category from "./icons/category"
 import { usePathname } from "next/navigation"
 import { cn } from "@repo/ui/lib/utils"
-import { useActivePage } from "~/hooks/use-activepage"
 
 
 export const Sidebar = () => {
 
     const pathname = usePathname();
-    const activePageAtom = useActivePage();
 
     const onClick = (pageName: string) => {
-        activePageAtom.setActivePage(pageName);
+        
     }
 
     return (

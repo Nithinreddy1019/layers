@@ -8,18 +8,15 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useActivePage } from "~/hooks/use-activepage";
 import { useSidebar } from "~/hooks/use-sidebar"
 
 export const Navigation = () => {
 
     const sidebarAtom = useSidebar();
     const router = useRouter();
-    const activePageAtom = useActivePage();
 
     const handleNavigation = (link: string, pageName: string) => {
         sidebarAtom.onClose();
-        activePageAtom.setActivePage(pageName)
         router.push(link);
     }
 
