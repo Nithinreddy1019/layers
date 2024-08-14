@@ -30,7 +30,7 @@ export const SettingsBlinde = () => {
     const [selectedTab, setSelectedTab] = useState<string | null>(settingsItems[0]?.title as string);
 
     return (
-        <div className="h-full flex rounded-xl border border-secondary border-opacity-50 shadow-sm px-2 relative">
+        <div className="h-fit w-full flex px-2 relative">
             <div className="hidden lg:block lg:w-52 py-4 border-r border-secondary pr-2 h-full fixed">
                 <aside
                     className="flex flex-col gap-y-2"
@@ -56,7 +56,7 @@ export const SettingsBlinde = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="border-secondary py-0 my-0">
                             {settingsItems.map((tab, index) => (
-                                <DropdownMenuItem className="p-0 my-1">
+                                <DropdownMenuItem key={index} className="p-0 my-1">
                                     <Button
                                         key={index}
                                         className={cn("w-full flex items-center justify-start gap-x-4 p-0 px-4 rounded-[12px]", selectedTab === tab.title && "bg-accent text-accent-foregroun")}
