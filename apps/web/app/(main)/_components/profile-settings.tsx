@@ -4,8 +4,9 @@ import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { FaUserAstronaut } from "react-icons/fa6";
+import { getSignedUrl } from "~/actions/s3-actions";
 import { useGetUser } from "~/hooks/useGetUser";
 
 
@@ -15,9 +16,48 @@ export const ProfileSettings = () => {
     const session = useSession();
     const { data, isLoading } = useGetUser(session.data?.user.email as string);
 
-    const [ changeEmail, setChangeEmail] = useState(false);
-    const [ changeUsername, setChangeUsername] = useState(false);
-    const [ changePassword, setChangePassword] = useState(false);
+    const [changeEmail, setChangeEmail] = useState(false);
+    const [changeUsername, setChangeUsername] = useState(false);
+    const [changePassword, setChangePassword] = useState(false);
+
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreviewUrl, setImagePreviewurl] = useState<string | null>(null);
+
+    const handleInputchange = (e: ChangeEvent<HTMLInputElement>) => {
+        if(!e.target.files) {
+            return
+        };
+
+        const file = e.target.files[0];
+        if(file) {
+            setImageFile(file);
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreviewurl(reader.result as string)
+            };
+            reader.readAsDataURL(file);
+        }  
+    };
+
+    const handleImageUpload = async () => {
+        if(!imageFile) return;
+
+        const signedUrlResult = await getSignedUrl();
+        
+        if(signedUrlResult.error !== undefined) {
+            // Add toast
+            console.log(signedUrlResult.error);
+            return;
+        };
+
+        const { url } = signedUrlResult.success;
+        console.log(url);
+
+        setImageFile(null);
+        setImagePreviewurl(null);
+    }
+
 
     if(isLoading) {
         return (
@@ -28,7 +68,7 @@ export const ProfileSettings = () => {
     }
 
     return (
-        <div className="space-y-8 my-4 lg:my-6 px-2 lg:px-8 lg:w-[650px]">
+        <div className="space-y-8 my-4 lg:my-6 px-4 md:px-5 lg:px-8 lg:w-[650px]">
             <h3 className="text-3xl font-medium">My Profile</h3>
 
             <div>
@@ -47,10 +87,31 @@ export const ProfileSettings = () => {
                             <input 
                                 type="file"
                                 className="hidden"
+                                onChange={(e) => handleInputchange(e)}
                             />
-                            <FaUserAstronaut className="w-full h-full rounded-full p-2"/>
+                            {!imageFile && (
+                                <FaUserAstronaut className="w-full h-full rounded-full p-2"/>
+                            )}
+                            {imageFile && (
+                                <img 
+                                    src={imagePreviewUrl as string}
+                                    className="w-full h-full rounded-full object-cover"
+                                />
+                            )}
                         </label>
-                        <span className="group-hover:inline-block transition transform duration-300 hidden absolute left-full top-1/2 ml-2 -translate-y-1/2 px-2 text-sm bg-secondary p-1.5 rounded-xl ">update</span>
+                        {!imageFile && (
+                            <span className="group-hover:inline-block transition transform duration-300 hidden absolute left-full top-1/2 ml-2 -translate-y-1/2 px-2 text-sm bg-secondary p-1.5 rounded-xl ">Update</span>
+                        )}
+                        {imageFile && (
+                            <Button
+                                className="absolute left-full top-1/2 ml-2 -translate-y-1/2 bg-green-600 text-white"
+                                variant={"secondary"}
+                                size={"sm"}
+                                onClick={handleImageUpload}
+                            >
+                                Upload
+                            </Button>
+                        )}
                     </div>
                 )}
             </div>
@@ -133,15 +194,15 @@ export const ProfileSettings = () => {
 
                         <div className="space-y-2">
                             <p className="text-sm font-medium">Old password:</p>
-                            <Input/>
+                            <Input type="password"/>
                         </div>
                         <div className="space-y-2">
                             <p className="text-sm font-medium">New password:</p>
-                            <Input/>
+                            <Input type="password"/>
                         </div>
                         <div className="space-y-2">
                             <p className="text-sm font-medium">confirm new password:</p>
-                            <Input/>
+                            <Input type="password"/>
                         </div>
 
                         <div className="flex items-center gap-x-2">
