@@ -3,7 +3,7 @@
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import axios from "axios";
-import { X } from "lucide-react";
+import { Edit, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
@@ -67,6 +67,7 @@ export const ProfileSettings = () => {
             return;
         }
 
+        data!.image = url!.split("?")[0]; 
         setImageFile(null);
         setImagePreviewurl(null);
     }
@@ -86,10 +87,49 @@ export const ProfileSettings = () => {
 
             <div>
                 {data?.image && (
-                    <img 
-                        src={data.image}
-                        className="h-32 w-32 rounded-full object-cover"
-                    />
+                    <div className="relative w-32">
+                        <img 
+                            src={imageFile ? imagePreviewUrl as string : data.image}
+                            className="h-32 w-32 rounded-full object-cover"
+                        />
+                        <div className="absolute right-1 bottom-2">
+                            <label>
+                                <input 
+                                    type="file"
+                                    className="hidden"
+                                    onChange={(e) => handleInputchange(e)}
+                                    accept="image/jpeg, image/png, image/webp, image/jpg"
+                                />
+                                <div className="bg-primary p-2 rounded-full">
+                                    <Edit className="w-4 h-4"/>
+                                </div>
+                            </label>
+                        </div>
+                        {imageFile && (
+                                <div className="absolute left-full top-1/2 ml-2 -translate-y-1/2 flex items-center gap-x-2">
+                                    <Button
+                                        className=" bg-green-600 text-white"
+                                        variant={"secondary"}
+                                        size={"sm"}
+                                        onClick={handleImageUpload}
+                                    >
+                                        Upload
+                                    </Button>
+
+                                    <Button
+                                        className="h-8 w-8"
+                                        variant={"ghost"}
+                                        size={"icon"}
+                                        onClick={() => {
+                                            setImageFile(null);
+                                            setImagePreviewurl(null);
+                                        }}
+                                    >
+                                        <X className="h-4 w-4"/>
+                                    </Button>
+                                </div>
+                            )}
+                    </div>
                 )}
                 {!data?.image && (
                     <div className="w-32 h-32 rounded-full border-2 border-red-500 border-opacity-15 bg-red-200 dark:bg-gradient-to-tr dark:from-red-400 dark:to-red-900 hover:shadow-sm transition transform duration-300 cursor-pointer group relative">
