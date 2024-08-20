@@ -2,11 +2,13 @@
 
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
+import axios from "axios";
+import { X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { FaUserAstronaut } from "react-icons/fa6";
-import { getSignedUrl } from "~/actions/s3-actions";
+import { getSignedUrlAction } from "~/actions/s3-actions";
 import { useGetUser } from "~/hooks/useGetUser";
 
 
@@ -40,19 +42,30 @@ export const ProfileSettings = () => {
         }  
     };
 
+
     const handleImageUpload = async () => {
         if(!imageFile) return;
 
-        const signedUrlResult = await getSignedUrl();
+        const signedUrlResult = await getSignedUrlAction({
+            fileSize: imageFile.size,
+            fileType: imageFile.type,
+        });
         
-        if(signedUrlResult.error !== undefined) {
+        if( !!signedUrlResult.error && signedUrlResult.error !== undefined) {
             // Add toast
             console.log(signedUrlResult.error);
             return;
         };
 
-        const { url } = signedUrlResult.success;
+        const url  = signedUrlResult.success?.url;
         console.log(url);
+
+        try {
+            const res = await axios.put(url!, imageFile , { headers: { "Content-Type": imageFile.type } });
+        } catch (error) {
+            console.log('Error uploading file')
+            return;
+        }
 
         setImageFile(null);
         setImagePreviewurl(null);
@@ -73,12 +86,9 @@ export const ProfileSettings = () => {
 
             <div>
                 {data?.image && (
-                    <Image 
+                    <img 
                         src={data.image}
-                        height={125}
-                        width={125}
-                        alt="profile image"
-                        className="rounded-full"
+                        className="h-32 w-32 rounded-full object-cover"
                     />
                 )}
                 {!data?.image && (
@@ -88,6 +98,7 @@ export const ProfileSettings = () => {
                                 type="file"
                                 className="hidden"
                                 onChange={(e) => handleInputchange(e)}
+                                accept="image/jpeg, image/png, image/webp, image/jpg"
                             />
                             {!imageFile && (
                                 <FaUserAstronaut className="w-full h-full rounded-full p-2"/>
@@ -103,14 +114,28 @@ export const ProfileSettings = () => {
                             <span className="group-hover:inline-block transition transform duration-300 hidden absolute left-full top-1/2 ml-2 -translate-y-1/2 px-2 text-sm bg-secondary p-1.5 rounded-xl ">Update</span>
                         )}
                         {imageFile && (
-                            <Button
-                                className="absolute left-full top-1/2 ml-2 -translate-y-1/2 bg-green-600 text-white"
-                                variant={"secondary"}
-                                size={"sm"}
-                                onClick={handleImageUpload}
-                            >
-                                Upload
-                            </Button>
+                            <div className="absolute left-full top-1/2 ml-2 -translate-y-1/2 flex items-center gap-x-2">
+                                <Button
+                                    className=" bg-green-600 text-white"
+                                    variant={"secondary"}
+                                    size={"sm"}
+                                    onClick={handleImageUpload}
+                                >
+                                    Upload
+                                </Button>
+
+                                <Button
+                                    className="h-8 w-8"
+                                    variant={"ghost"}
+                                    size={"icon"}
+                                    onClick={() => {
+                                        setImageFile(null);
+                                        setImagePreviewurl(null);
+                                    }}
+                                >
+                                    <X className="h-4 w-4"/>
+                                </Button>
+                            </div>
                         )}
                     </div>
                 )}
