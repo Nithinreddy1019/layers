@@ -1,6 +1,6 @@
 "use server"
 import { auth } from "~/auth";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { db } from "@repo/db/db";
 
@@ -88,4 +88,37 @@ export const getSignedUrlAction = async ({
         return { error: "Somethign went wrong" }        
     }
 
+};
+
+
+
+export const deletePrevImageAction = async () => {
+    const session = await auth();
+
+    if(!session) {
+        return { error: "Not authenticated" }
+    };
+
+    const url = session.user.image;
+    if(!url!.includes("https://blinde-s3-bucket.s3.ap-south-1.amazonaws.com")){
+        return;
+    }
+
+    if(url && url.includes("https://blinde-s3-bucket.s3.ap-south-1.amazonaws.com")) {
+        const key = url.split("/").slice(-1)[0];
+
+        const deleteParams = {
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: key
+        };
+
+        try {
+            await s3client.send(new DeleteObjectCommand(deleteParams));
+
+            return { success: "Deleted previous profile image"}
+        } catch (error) {
+            return { error: "Somethign went wrong"}
+        }
+    }
 }
+

@@ -10,7 +10,7 @@ import { ChangeEvent, useState } from "react";
 import { FaUserAstronaut } from "react-icons/fa6";
 import { toast } from "sonner";
 import { updateEmailAction, updatePasswordAction, updateUsernameAction } from "~/actions/profile-actions";
-import { getSignedUrlAction } from "~/actions/s3-actions";
+import { deletePrevImageAction, getSignedUrlAction } from "~/actions/s3-actions";
 import { useGetUser } from "~/hooks/useGetUser";
 
 
@@ -65,7 +65,11 @@ export const ProfileSettings = () => {
         };
 
         const url  = signedUrlResult.success?.url;
-        console.log(url);
+
+        const res = await deletePrevImageAction();
+        if(res?.success) {
+            toast.success(res.success)
+        };
 
         try {
             const uploadImage = () => {
