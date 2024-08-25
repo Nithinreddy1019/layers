@@ -3,8 +3,8 @@
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import axios from "axios";
-import { Edit, X } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { Edit, LogOut, X } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { FaUserAstronaut } from "react-icons/fa6";
@@ -184,7 +184,7 @@ export const ProfileSettings = () => {
     }
 
     return (
-        <div className="space-y-8 my-4 lg:my-6 px-4 md:px-5 lg:px-8 lg:w-[650px]">
+        <div className="space-y-8 my-4 lg:my-6 px-4 md:px-5 lg:px-8 lg:w-[650px] w-full flex items-center flex-col lg:block">
             <h3 className="text-3xl font-medium">My Profile</h3>
 
             <div>
@@ -288,8 +288,8 @@ export const ProfileSettings = () => {
                 {!changeEmail && data?.credentials && (
                     <div className="flex items-center justify-between mb-4 py-2">
                         <div className="space-y-1">
-                            <p className="text-sm font-medium">Email:</p>
-                            <p>{data?.email}</p>
+                            <p className="text-xs sm:text-sm font-medium">Email:</p>
+                            <p className="line-clamp-1">{data?.email}</p>
                         </div>
                         <Button size={"sm"} variant={"secondary"} onClick={() => setChangeEmail(true)}>
                             Change
@@ -319,7 +319,7 @@ export const ProfileSettings = () => {
                 {!changeUsername && data?.credentials && (
                     <div className="flex items-center justify-between mb-4 py-2">
                         <div className="space-y-1">
-                            <p className="text-sm font-medium">Username:</p>
+                            <p className="text-xs sm:text-sm font-medium">Username:</p>
                             <p>{data?.username}</p>
                         </div>
                         <Button size={"sm"} variant={"secondary"} onClick={() => setChangeUsername(true)}>
@@ -349,7 +349,7 @@ export const ProfileSettings = () => {
                 {!changePassword && data?.credentials && (
                     <div className="flex items-center justify-between mb-4 py-2">
                         <div className="space-y-1">
-                            <p className="text-sm font-medium">Password:</p>
+                            <p className="text-xs sm:text-sm font-medium">Password:</p>
                             <p>* * * * * *</p>
                         </div>
                         <Button size={"sm"} variant={"secondary"} onClick={() => setChangePassword(true)}>
@@ -384,6 +384,16 @@ export const ProfileSettings = () => {
                         </div>
                     </div>
                 )}
+            </div>
+
+            <div>
+                <Button
+                    size={"sm"}
+                    onClick={() => signOut()}
+                >
+                    Logout
+                    <LogOut className="h-4 w-4 ml-2"/>
+                </Button>
             </div>
         </div>
     )
