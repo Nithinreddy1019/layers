@@ -22,6 +22,7 @@ export const useGetUser = (email: string) => {
                 setData(res.data);
             } catch (error) {
                 console.log("error occured")
+                console.log(error)
             } finally {
                 setIsLoading(false)
             }

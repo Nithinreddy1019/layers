@@ -8,6 +8,8 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { FaUserAstronaut } from "react-icons/fa6";
+import { toast } from "sonner";
+import { updateEmailAction, updatePasswordAction, updateUsernameAction } from "~/actions/profile-actions";
 import { getSignedUrlAction } from "~/actions/s3-actions";
 import { useGetUser } from "~/hooks/useGetUser";
 
@@ -15,12 +17,18 @@ import { useGetUser } from "~/hooks/useGetUser";
 
 export const ProfileSettings = () => {
 
-    const session = useSession();
-    const { data, isLoading } = useGetUser(session.data?.user.email as string);
+    const { data: session, status, update } = useSession();
+    const { data, isLoading } = useGetUser(session?.user.email as string);
 
     const [changeEmail, setChangeEmail] = useState(false);
     const [changeUsername, setChangeUsername] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
+
+    const [emailValue, setEmailValue] = useState<string | null>(null);
+    const [usernamevalue, setUsernameValue] = useState<string | null>(null);
+    const [oldPasswordValue, setOldPasswwordValue] = useState<string | null>(null);
+    const [newPasswordValue, setNewPasswwordValue] = useState<string | null>(null);
+    const [newVerifyPasswordValue, setNewVerifyPasswwordValue] = useState<string | null>(null);
 
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreviewUrl, setImagePreviewurl] = useState<string | null>(null);
@@ -52,8 +60,7 @@ export const ProfileSettings = () => {
         });
         
         if( !!signedUrlResult.error && signedUrlResult.error !== undefined) {
-            // Add toast
-            console.log(signedUrlResult.error);
+            toast.error(signedUrlResult.error);
             return;
         };
 
@@ -61,7 +68,17 @@ export const ProfileSettings = () => {
         console.log(url);
 
         try {
-            const res = await axios.put(url!, imageFile , { headers: { "Content-Type": imageFile.type } });
+            const uploadImage = () => {
+                return axios.put(url!, imageFile, { 
+                  headers: { "Content-Type": imageFile.type } 
+                });
+              };
+              
+              toast.promise(uploadImage(), {
+                loading: "Uploading image...",
+                success: "Profile image updated",
+                error: "An error occurred"
+              });
         } catch (error) {
             console.log('Error uploading file')
             return;
@@ -71,6 +88,87 @@ export const ProfileSettings = () => {
         setImageFile(null);
         setImagePreviewurl(null);
     }
+
+    const handleEmailUpdate = async () => {
+        if(emailValue === "" || emailValue === null) return;
+
+        const res = await updateEmailAction(emailValue);
+
+        if(res.error) {
+            toast.error(res.error);
+        } else {
+            toast.success(res.success);
+            const updatedUser = {
+                ...session,
+                user: {
+                    ...session?.user,
+                    email: res.email
+                }
+            }
+
+            await update(updatedUser);
+        }
+
+        setEmailValue(null);
+        setChangeEmail(false);
+    };
+
+    const hanldeUsernameUpdate = async () => {
+        if(usernamevalue === "" || usernamevalue === null) return;
+
+        const res = await updateUsernameAction(usernamevalue);
+
+        if(res.error) {
+            toast.error(res.error);
+        } else {
+            toast.success(res.success);
+
+            const updatedUser = {
+                ...session,
+                user: {
+                    ...session?.user,
+                    name: res.username
+                }
+            }
+
+            await update(updatedUser)
+            if(data && data.username) {
+                data.username = res.username
+            };
+            
+        }
+
+        setUsernameValue(null);
+        setChangeUsername(false);
+    };
+    
+
+    const hanldePasswordUpdate = async () => {
+        if(oldPasswordValue === null || newPasswordValue === null || newVerifyPasswordValue === null) return;
+
+        if(oldPasswordValue.length < 6 || newPasswordValue.length < 6) {
+            toast.error("Minumum 6 characters required");
+            return;
+        }
+
+        if(newPasswordValue !== newVerifyPasswordValue) {
+            toast.error("Passwords do not match");
+            return;
+        }
+
+        const res = await updatePasswordAction(oldPasswordValue, newPasswordValue, newVerifyPasswordValue);
+
+        if(res.error) {
+            toast.error(res.error);
+            return;
+        }
+
+        toast.success(res.success);
+        setOldPasswwordValue(null);
+        setNewPasswwordValue(null);
+        setNewVerifyPasswwordValue(null);
+        setChangePassword(false);
+    };
 
 
     if(isLoading) {
@@ -198,11 +296,12 @@ export const ProfileSettings = () => {
                     <div className="flex flex-col gap-y-2 mb-4 py-2">
                         <p className="text-sm font-medium">Email:</p>
                         <Input 
-                            value={data?.email}
+                            placeholder={data.email}
+                            onChange={(e) => setEmailValue(e.target.value)}
                         />
 
                         <div className="flex items-center gap-x-2">
-                            <Button variant={"ghost"} size={"sm"}>
+                            <Button variant={"ghost"} size={"sm"} onClick={handleEmailUpdate}>
                                 Update
                             </Button>
                             <Button  size={"sm"} onClick={() => setChangeEmail(false)}>
@@ -228,11 +327,12 @@ export const ProfileSettings = () => {
                     <div className="flex flex-col gap-y-2 mb-4 py-2">
                         <p className="text-sm font-medium">Username:</p>
                         <Input 
-                            value={data?.username}
+                            placeholder={data.username}
+                            onChange={(e) => setUsernameValue(e.target.value)}
                         />
 
                         <div className="flex items-center gap-x-2">
-                            <Button variant={"ghost"} size={"sm"}>
+                            <Button variant={"ghost"} size={"sm"} onClick={hanldeUsernameUpdate}>
                                 Update
                             </Button>
                             <Button size={"sm"} onClick={() => setChangeUsername(false)}>
@@ -259,19 +359,19 @@ export const ProfileSettings = () => {
 
                         <div className="space-y-2">
                             <p className="text-sm font-medium">Old password:</p>
-                            <Input type="password"/>
+                            <Input type="password" onChange={(e) => setOldPasswwordValue(e.target.value)}/>
                         </div>
                         <div className="space-y-2">
                             <p className="text-sm font-medium">New password:</p>
-                            <Input type="password"/>
+                            <Input type="password" onChange={(e) => setNewPasswwordValue(e.target.value)}/>
                         </div>
                         <div className="space-y-2">
                             <p className="text-sm font-medium">confirm new password:</p>
-                            <Input type="password"/>
+                            <Input type="password" onChange={(e) => setNewVerifyPasswwordValue(e.target.value)}/>
                         </div>
 
                         <div className="flex items-center gap-x-2">
-                            <Button variant={"ghost"} size={"sm"}>
+                            <Button variant={"ghost"} size={"sm"} onClick={hanldePasswordUpdate}>
                                 Update
                             </Button>
                             <Button size={"sm"} onClick={() => setChangePassword(false)}>
