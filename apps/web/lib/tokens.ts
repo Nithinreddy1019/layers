@@ -25,4 +25,33 @@ export const generateVerificationtoken = async (email: string) => {
     })
 
     return verificationToken;
+};
+
+
+
+export const generatePasswordResetToken = async (email: string) => {
+    const token = uuidv4();
+    const expires = new Date(new Date().getTime() + 5 * 60 * 1000)
+
+    const tokenExists = await db.passwordResetToken.findFirst({
+        where: {
+            email: email
+        }
+    });
+
+    if(tokenExists) {
+        await db.passwordResetToken.delete({
+            where: { id: tokenExists.id }
+        })
+    };
+
+    const passwordResetToken = await db.passwordResetToken.create({
+        data: {
+            email, 
+            token: token,
+            expires: expires
+        }
+    });
+
+    return passwordResetToken;
 }

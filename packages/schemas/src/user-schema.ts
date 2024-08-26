@@ -30,3 +30,22 @@ export const ProfileSchema = z.object({
     image: z.string().optional(),
     credentials: z.boolean()
 });
+
+
+export const ResetSchema = z.object({
+    email: z.string({
+        message: "Email is required"
+    }).email({
+        message: "Emails is required"
+    })
+});
+
+
+export const NewPasswordSchema = z.object({
+    newPassword: z.string().min(6, {
+        message: "Minimum 6 characters required"
+    }),
+    confirmNewPassword: z.string().min(6, {
+        message: "Minimum 6 characters required"
+    }),
+});

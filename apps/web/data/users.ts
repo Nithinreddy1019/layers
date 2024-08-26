@@ -4,7 +4,10 @@ import { db } from "@repo/db/db"
 export const getUserByEmail = async (email: string) => {
     try {
         const existingUser = await db.user.findUnique({
-            where: {email}
+            where: {email},
+            include: {
+                accounts: true
+            }
         })
 
         return existingUser;

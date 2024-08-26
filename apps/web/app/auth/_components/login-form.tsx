@@ -21,6 +21,7 @@ import { FormSuccess } from "./form-success";
 import { useState, useTransition } from "react";
 import { LoginAction } from "~/actions/login-action";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 
 export const Loginform = () => {
@@ -73,7 +74,7 @@ export const Loginform = () => {
             >
                 <Form {...form}>
                     <form
-                        className="space-y-8" 
+                        className="space-y-6" 
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
                         <div className="space-y-4">
@@ -120,9 +121,16 @@ export const Loginform = () => {
                         </div>
                         <FormError message={error || urlError}/>
                         <FormSuccess message={success}/>
+                        
+                        <Button asChild variant={"link"} size={"sm"} className="p-0 m-0">
+                            <Link href={"/auth/reset"}>
+                                Forgot password?
+                            </Link>
+                        </Button>
+
                         <Button 
                             type="submit"
-                            className="w-full text-sm font-semibold" 
+                            className="w-full text-sm font-semibold mt-8" 
                             size="sm"
                             disabled={isPending}
                         >

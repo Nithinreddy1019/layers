@@ -8,7 +8,9 @@ export const publicRoutes = [
 export const authenticationRoutes = [
     "/auth/login",
     "/auth/register",
-    "/auth/error"
+    "/auth/error",
+    "/auth/reset",
+    "/auth/new-password"
 ]
 
 export const authenticationApiRoutes = "/api/auth"
