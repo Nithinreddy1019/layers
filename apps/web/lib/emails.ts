@@ -60,4 +60,25 @@ export const sendPasswordResetMail = async ({
     } catch (error) {
         return
     }
+};
+
+
+export const sendTwoFactorCodeMail = async ({
+    token,
+    mailId
+}: EmailProps) => {
+    const emailHtml = `<p>Your 2FA Code - ${token}</p>`
+
+    try {
+        const sendResult = await transport.sendMail({
+            from: SMTP_EMAIL,
+            to: mailId,
+            subject: "2FA code",
+            html: emailHtml
+        });
+
+        return
+    } catch (error) {
+        return        
+    }
 }

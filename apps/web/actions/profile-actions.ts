@@ -126,3 +126,34 @@ export const updatePasswordAction = async (oldPassword: string, newPassword: str
     }
 
 };
+
+
+export const updateTwoFactorAuthentication = async (value: boolean) => {
+    console.log(value);
+    const session = await auth();
+    if(!session?.user) {
+        return { error: "Unauthorized" }
+    }
+
+    if(value === null) {
+        return { error: "No value given" }
+    };
+
+    if(value === true) {
+        await db.user.update({
+            where: { id: session.user.id },
+            data: { isTwoFactorEnabled: true }
+        });
+
+        return { success: "Two Factor Authentication enabled" }
+    };
+
+    if(value === false) {
+        await db.user.update({
+            where: { id: session.user.id },
+            data: { isTwoFactorEnabled: false }
+        });
+
+        return { success: "Two Factor Authentication disabled" }
+    };
+}

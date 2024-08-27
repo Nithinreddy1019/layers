@@ -1,5 +1,6 @@
 import { db } from "@repo/db/db";
 import { v4 as uuidv4 } from "uuid";
+import crypto from "crypto";
 
 
 export const generateVerificationtoken = async (email: string) => {
@@ -54,4 +55,31 @@ export const generatePasswordResetToken = async (email: string) => {
     });
 
     return passwordResetToken;
-}
+};
+
+
+export const generateTwoFactorrToken = async (email: string) => {
+    const token = crypto.randomInt(100000, 1000000).toString();
+    const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
+
+    const tokenExists = await db.twoFactorToken.findFirst({
+        where: { email: email }
+    });
+
+    if(tokenExists) {
+        await db.twoFactorToken.delete({
+            where: { id: tokenExists.id }
+        })
+    };
+
+    const twoFactorToken = await db.twoFactorToken.create({
+        data: {
+            email,
+            token: token,
+            expires: expires
+        }
+    });
+
+    return twoFactorToken;
+
+};

@@ -182,6 +182,7 @@ export const ProfileSettings = () => {
             </div>
         )
     }
+    
 
     return (
         <div className="space-y-8 my-4 lg:my-6 px-4 md:px-5 lg:px-8 lg:w-[650px] w-full flex items-center flex-col lg:block">

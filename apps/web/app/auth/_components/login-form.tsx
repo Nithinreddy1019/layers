@@ -13,6 +13,12 @@ import {
     FormLabel,
     FormField
 } from "@repo/ui/components/form";
+import { 
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSeparator,
+    InputOTPSlot 
+} from "@repo/ui/components/input-otp";
 import { Input } from "@repo/ui/components/input";
 import { Button } from "@repo/ui/components/button";
 import {motion} from "framer-motion";
@@ -35,11 +41,14 @@ export const Loginform = () => {
     const [success, setSuccess] = useState<string| undefined>("");
     const [isPending, setTransition] = useTransition();
 
+    const [showTwoFactor, setShowTwoFactor] = useState(false);
+
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
             email: "",
-            password: ""
+            password: "",
+            code: ""
         }
     })
 
@@ -50,12 +59,24 @@ export const Loginform = () => {
         setTransition(() => {
             LoginAction(values)
             .then((data) => {
-                setError(data?.error);
-                setSuccess(data?.success);
+                if(data.error) {
+                    form.reset();
+                    setError(data.error)
+                };
+
+                if(data.success) {
+                    form.reset();
+                    setSuccess(data.success)
+                };
+
+                if(data.twoFactor) {
+                    setShowTwoFactor(true);
+                };
             })
-        })
-        
-    }
+            .catch(() => {})
+        });
+
+    };
 
     return (
         <motion.div
@@ -78,46 +99,83 @@ export const Loginform = () => {
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
                         <div className="space-y-4">
-                            <FormField 
+                            {!showTwoFactor &&
+                                <>
+                                    <FormField 
+                                        control={form.control}
+                                        name="email"
+                                        render={({field}) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    Email
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Input 
+                                                        {...field}
+                                                        type="email"
+                                                        placeholder="email@gmail.com"
+                                                        disabled={isPending}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField 
+                                        control={form.control}
+                                        name="password"
+                                        render={({field}) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    Password
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Input 
+                                                        {...field}
+                                                        type="password"
+                                                        placeholder="******"
+                                                        disabled={isPending}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </>
+                            }
+                            {showTwoFactor && (
+                                <FormField 
                                 control={form.control}
-                                name="email"
+                                name="code"
                                 render={({field}) => (
                                     <FormItem>
                                         <FormLabel>
-                                            Email
+                                            Two Factor Code
                                         </FormLabel>
                                         <FormControl>
-                                            <Input 
+                                            {/* <Input 
                                                 {...field}
-                                                type="email"
-                                                placeholder="email@gmail.com"
                                                 disabled={isPending}
-                                            />
+                                            /> */}
+                                            <InputOTP maxLength={6} {...field}>
+                                                <InputOTPGroup>
+                                                    <InputOTPSlot index={0}/>
+                                                    <InputOTPSlot index={1}/>
+                                                    <InputOTPSlot index={2}/>
+                                                </InputOTPGroup>
+                                                <InputOTPSeparator />
+                                                <InputOTPGroup>
+                                                    <InputOTPSlot index={3}/>
+                                                    <InputOTPSlot index={4}/>
+                                                    <InputOTPSlot index={5}/>
+                                                </InputOTPGroup>
+                                            </InputOTP>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
-                            <FormField 
-                                control={form.control}
-                                name="password"
-                                render={({field}) => (
-                                    <FormItem>
-                                        <FormLabel>
-                                            Password
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input 
-                                                {...field}
-                                                type="password"
-                                                placeholder="******"
-                                                disabled={isPending}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                                />
+                            )}
                         </div>
                         <FormError message={error || urlError}/>
                         <FormSuccess message={success}/>
@@ -134,7 +192,7 @@ export const Loginform = () => {
                             size="sm"
                             disabled={isPending}
                         >
-                            Login
+                            {showTwoFactor ? "Confirm" : "Login"}
                         </Button>
                     </form>
                 </Form>

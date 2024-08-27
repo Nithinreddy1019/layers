@@ -31,7 +31,6 @@ export const getVerificationtokenByEmail = async (email: string) => {
 
 
 // Password reset tokens
-
 export const getPasswordresetByToken = async (token: string) => {
     try {
         const passwordResetToken = await db.passwordResetToken.findUnique({
@@ -56,3 +55,41 @@ export const getPasswordresetByEmail = async (email: string) => {
         return null;
     }
 };
+
+
+//Two factor tokens
+export const getTwoFactorTokenByToken = async (token: string) => {
+    try {
+        const twoFactorToken = await db.twoFactorToken.findUnique({
+            where: { token: token }
+        })
+
+        return twoFactorToken
+    } catch (error) {
+        return null;
+    }
+};
+
+export const getTwoFactorTokenByEmail = async (email: string) => {
+    try {
+        const twoFactorToken = await db.twoFactorToken.findFirst({
+            where: { email: email }
+        })
+
+        return twoFactorToken
+    } catch (error) {
+        return null;
+    }
+};
+
+export const getTwoFactorConfirmationByUserId = async (userId: string) => {
+    try {
+        const twoFactorconfirmation = await db.twoFactorConfirmation.findUnique({
+            where: { userId: userId }
+        });
+
+        return twoFactorconfirmation;
+    } catch (error) {
+        return null;
+    }
+}
