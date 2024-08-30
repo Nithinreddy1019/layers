@@ -8,6 +8,7 @@ import { getTwoFactorConfirmationByUserId, getTwoFactorTokenByEmail } from "~/da
 import { sendTwoFactorCodeMail, sendVerificationEmail } from "~/lib/emails";
 import { generateTwoFactorrToken, generateVerificationtoken } from "~/lib/tokens";
 import { DEFAULT_LOGIN_REDIRECT } from "~/routes";
+import * as bcrypt from "bcryptjs";
 
 export const LoginAction = async (values: z.infer<typeof LoginSchema>) => {
     const validatedFileds = LoginSchema.safeParse(values);
@@ -35,6 +36,12 @@ export const LoginAction = async (values: z.infer<typeof LoginSchema>) => {
 
         return { success: "Verification email sent" }
     }
+
+    const passwordMatch = await bcrypt.compare(password, existingUser.password);
+    if(!passwordMatch) {
+        return { error: "Invalid credentials" }
+    }
+
 
     //Sending two factor token 
     if(existingUser.isTwoFactorEnabled && existingUser.email) {

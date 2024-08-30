@@ -100,6 +100,10 @@ export const deletePrevImageAction = async () => {
     };
 
     const url = session.user.image;
+
+    if(url === null) {
+        return;
+    }
     if(!url!.includes("https://blinde-s3-bucket.s3.ap-south-1.amazonaws.com")){
         return;
     }
