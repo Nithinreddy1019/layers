@@ -59,14 +59,14 @@ model Blindes {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  blindeRunId String    @unique
-  blindeRun   BlindeRun @relation(fields: [blindeRunId], references: [id])
+  blindeRunId String?   @unique
+  blindeRun   BlindeRun? @relation(fields: [blindeRunId], references: [id])
 
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime?
 
   published   Boolean
-  publishedAt DateTime
+  publishedAt DateTime?
 }
 
 model BlindeRun {

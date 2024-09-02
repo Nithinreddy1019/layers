@@ -1,7 +1,9 @@
+import { ListWorkflows } from "../_components/list-workflows";
+
 const WorkflowsPage = () => {
     return (
-        <div>
-            workflows
+        <div className="h-full">
+            <ListWorkflows />
         </div>
     );
 }
