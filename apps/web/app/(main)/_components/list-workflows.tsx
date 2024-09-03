@@ -8,7 +8,7 @@ import { Workflow } from "./workflow";
 export const ListWorkflows = () => {
     return (
         <div className="px-2 mx-auto relative min-h-full">
-            <div className="sticky top-16 hidden lg:flex items-center justify-between py-5 border-b-2 dark:border-secondary dark:bg-[#121212] bg-white text-sm font-medium z-50">
+            <div className="sticky top-16 hidden lg:flex items-center justify-between py-5 border-b-2 dark:border-secondary dark:bg-[#121212] bg-white text-sm font-medium z-10">
                 <div className="flex items-center">
                     <p className="min-w-36 text-center">Icons</p>
                     <p>Name</p>

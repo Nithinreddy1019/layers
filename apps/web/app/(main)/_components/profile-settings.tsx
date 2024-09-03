@@ -6,7 +6,7 @@ import axios from "axios";
 import { Edit, LogOut, X } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { FaUserAstronaut } from "react-icons/fa6";
 import { toast } from "sonner";
 import { updateEmailAction, updatePasswordAction, updateUsernameAction } from "~/actions/profile-actions";
@@ -14,12 +14,12 @@ import { deletePrevImageAction, getSignedUrlAction } from "~/actions/s3-actions"
 import { useGetUser } from "~/hooks/useGetUser";
 
 
-
+// WIP: DRY - Write good code - componenets division and better data fetching, loading state
 export const ProfileSettings = () => {
 
     const { data: session, status, update } = useSession();
     const { data, isLoading } = useGetUser(session?.user.email as string);
-
+    
     const [changeEmail, setChangeEmail] = useState(false);
     const [changeUsername, setChangeUsername] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
@@ -32,6 +32,7 @@ export const ProfileSettings = () => {
 
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreviewUrl, setImagePreviewurl] = useState<string | null>(null);
+
 
     const handleInputchange = (e: ChangeEvent<HTMLInputElement>) => {
         if(!e.target.files) {
@@ -175,10 +176,18 @@ export const ProfileSettings = () => {
     };
 
 
-    if(isLoading) {
+    if(isLoading || status === "loading") {
         return (
             <div>
                 Loading...
+            </div>
+        )
+    }
+
+    if(!session || !data) {
+        return (
+            <div>
+                Error
             </div>
         )
     }
