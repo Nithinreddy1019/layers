@@ -1,23 +1,39 @@
 "use client"
 
+import { Workflow } from "./workflow";
+
 
 
 export const ListWorkflows = () => {
     return (
-        <div className="max-w-7xl mx-auto">
-            <div className="relative">
-                <div className="hidden sticky bg-opacity-100 bg-white dark:bg-[#121212] top-16 xl:flex items-center justify-between gap-x-4 py-4 border-b dark:border-secondary px-2">
-                    <p className="w-36">Flow</p>
-                    <div className="ml-32 flex-1 flex items-center justify-between">
-                        <p>Name</p>
-                        <p className="w-36">LastEdited</p>
-                    </div>
-                    <p className="mr-16">Status</p>
+        <div className="px-2 mx-auto relative min-h-full">
+            <div className="sticky top-16 hidden lg:flex items-center justify-between py-5 border-b-2 dark:border-secondary dark:bg-[#121212] bg-white text-sm font-medium z-50">
+                <div className="flex items-center">
+                    <p className="min-w-36 text-center">Icons</p>
+                    <p>Name</p>
                 </div>
-
-                {/* Workflow comp - WIP */}
-
+                <div className="flex items-center">
+                    <p className="min-w-20 mr-10">Last edited</p>
+                    <p className="min-w-20 mr-12">Status</p>
+                </div>
             </div>
+
+            {/* Add workflows */}
+            <Workflow 
+                id="jkhgjhg"
+                flowdata={["Gmail", "Notion", "Github", "Notion", "Discord", "Drive"]}
+                workflowName="Personal"
+                LastEdited={new Date("Tue Sep 03 2024 07:51:05 GMT+0530 (India Standard Time)")}
+                status={false}
+            />
+            <Workflow 
+                id="jkhgjhg"
+                flowdata={["Gmail", "Drive", "Discord"]}
+                workflowName="Personal"
+                LastEdited={new Date("Tue Sep 01 2023 03:51:05 GMT+0530 (India Standard Time)")}
+                status={true}
+            />
+            
         </div>
     )
 };
