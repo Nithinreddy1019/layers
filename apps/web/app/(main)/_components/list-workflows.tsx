@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@repo/ui/components/button";
 import { Workflow } from "./workflow";
 
 
@@ -14,8 +15,20 @@ export const ListWorkflows = () => {
                 </div>
                 <div className="flex items-center">
                     <p className="min-w-20 mr-10">Last edited</p>
-                    <p className="min-w-20 mr-12">Status</p>
+                    <p className="min-w-20">Status</p>
+                    <Button size={"sm"}>
+                        + New blind
+                    </Button>
                 </div>
+            </div>
+
+            <div className="lg:hidden w-full px-2 flex justify-end mt-2">
+                <Button 
+                    size={"sm"}
+                    className="w-full md:w-fit"
+                >
+                    + New blind
+                </Button>
             </div>
 
             {/* Add workflows */}

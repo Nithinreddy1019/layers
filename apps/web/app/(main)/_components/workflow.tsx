@@ -61,7 +61,7 @@ export const Workflow = ({
 
                 <div className="flex items-center">
                         <p className="min-w-20 mr-6 text-center">{FormatdateRelative(new Date(LastEdited))}</p>
-                        <div className="min-w-20 mr-2 flex flex-col text-[10px] items-center">
+                        <div className="min-w-20 mr-14 flex flex-col text-[10px] items-center">
                             <Switch 
                                 checked={switchValue}
                                 onCheckedChange={handleStatusChange}
