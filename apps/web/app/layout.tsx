@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Roboto } from "next/font/google";
+import { Lexend } from "next/font/google";
 import "@repo/ui/globals.css";
 
 const geistSans = localFont({
@@ -12,7 +12,7 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
 });
 
-const roboto = Roboto({
+const lexend = Lexend({
   subsets: ["latin"],
   weight: ["400", "500"]
 })
@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${roboto.className}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${lexend.className}`}>
         {children}
       </body>
     </html>
