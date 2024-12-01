@@ -4,6 +4,7 @@ import { cn } from "@repo/ui/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { useState } from "react"
+import { ShinyButton } from "./shiny-button";
 
 
 
@@ -58,11 +59,9 @@ export const Navbar = () => {
                                 <line x1="3" y1="18" x2="21" y2="18" className={cn("origin-left transition", isOpen && "-rotate-45 translate-y-1")}></line>
                             </svg>
 
-                            <button 
-                                className="hidden md:block rounded-full h-10 px-6 font-medium bg-gradient-to-r from-purple-700 to-purple-900 focus:ring-2 ring-purple-700 hover:bg-gradient-to-br hover:from-purple-900 hover:to-purple-700"
-                            >
+                            <ShinyButton className="hidden md:block">
                                 Login
-                            </button>
+                            </ShinyButton>
                         </div>
                     </div>
                     <AnimatePresence>
@@ -87,19 +86,22 @@ export const Navbar = () => {
                                             whileInView={{ y: 0, opacity: 1 }}
                                             transition={{ duration: 0.5, ease: "easeOut" }}
                                             href={link.href} 
-                                            key={link.label}      className="py-2 text-lg text-white tracking-wider"
+                                            key={link.label}      
+                                            className="py-2 text-lg text-white tracking-wider border-b pb-0 border-purple-500"
                                         >
                                             {link.label}
                                         </motion.a>
                                     ))}
-                                    <motion.button 
+                                    <motion.div 
                                         initial={{ y: 5, opacity: 0 }}
                                         whileInView={{ y: 0, opacity: 1 }}
                                         transition={{ duration: 0.5, ease: "easeOut" }}
-                                        className="rounded-full h-10 px-6 font-medium bg-gradient-to-r from-purple-700 to-purple-900 focus:ring-2 ring-purple-700 hover:bg-gradient-to-br hover:from-purple-900 hover:to-purple-700"
+                                        
                                     >
-                                        Login
-                                    </motion.button>
+                                        <ShinyButton>
+                                            Login
+                                        </ShinyButton>
+                                    </motion.div>
                                 </div>
                             </motion.div>
                         )
