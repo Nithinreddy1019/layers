@@ -24,9 +24,22 @@ export const Navbar = () => {
     return (
         <section className="py-4 lg:py-6 fixed w-full top-0 z-50">
             <div className="container max-w-5xl">
-                <div className={cn(
+                <motion.div 
+                    initial={{
+                        opacity: 0,
+                        y:-30
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0
+                    }}
+                    transition={{
+                        duration: 0.5
+                    }}
+                    className={cn(
                     "border border-white/10  rounded-[27px] md:rounded-full bg-neutral-950/70 backdrop-blur"
-                )}>
+                    )}
+                >
                     <div className="grid grid-cols-2 lg:grid-cols-3 py-2 px-4 items-center md:pr-2 ">
                         <div>
                             <Image 
@@ -96,7 +109,7 @@ export const Navbar = () => {
                                         initial={{ y: 5, opacity: 0 }}
                                         whileInView={{ y: 0, opacity: 1 }}
                                         transition={{ duration: 0.5, ease: "easeOut" }}
-                                        
+                                        className="mt-2"
                                     >
                                         <ShinyButton>
                                             Login
@@ -107,7 +120,7 @@ export const Navbar = () => {
                         )
                     }
                     </AnimatePresence>
-                </div>
+                </motion.div>
             </div>
         </section>
     )
