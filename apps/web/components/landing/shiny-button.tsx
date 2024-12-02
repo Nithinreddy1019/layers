@@ -23,7 +23,7 @@ export const ShinyButton = ({
                 <div className="rounded-full border border-white/20 absolute inset-0 [mask_image:linear-gradient(to_top,black,transparent)]"></div>
                 <div className="absolute inset-0 shadow-[0px_0px_10px_rgb(147,51,234)_inset] rounded-full"></div>
             </div>
-            <span>{children}</span>
+            <span className="flex items-center gap-x-2">{children}</span>
         </button>
     )
 }

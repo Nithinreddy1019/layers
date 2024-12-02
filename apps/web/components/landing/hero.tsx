@@ -8,6 +8,9 @@ import designExample2 from "../../public/assets/design-example-2.png";
 import { Pointer } from "./pointer";
 
 import { motion, useAnimate } from "motion/react";
+import { Button } from "@repo/ui/components/ui/button";
+import { ShinyButton } from "./shiny-button";
+import { ArrowRight } from "lucide-react";
 
 
 export const Hero = () => {
@@ -44,6 +47,8 @@ export const Hero = () => {
 
     });
 
+
+    // TODO: Reduce the code repetition in motion.div use DRY principles
     return (
         <section className="py-24 pt-40 lg:py-28 lg:pt-48 overflow-x-clip">
             <div className="container relative">
@@ -157,6 +162,25 @@ export const Hero = () => {
                 >
                     Create impactuful & efficient automation workflows. Integrate with various applications available.
                 </motion.p>
+
+                <motion.div 
+                     initial={{
+                        opacity: 0,
+                        y:45
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0
+                    }}
+                    transition={{
+                        duration: 0.5
+                    }}
+                    className="flex justify-center mt-12">
+                    <ShinyButton className="flex items-center group font-light">
+                        Try it now 
+                        <ArrowRight className="size-4 stroke-2 group-hover:translate-x-1 transition"/>
+                    </ShinyButton>
+                </motion.div>
             </div>
         </section>
     )
