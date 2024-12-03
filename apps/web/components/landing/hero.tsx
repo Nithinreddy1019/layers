@@ -176,7 +176,7 @@ export const Hero = () => {
                         duration: 0.5
                     }}
                     className="flex justify-center mt-12">
-                    <ShinyButton className="flex items-center group font-light">
+                    <ShinyButton className="flex items-center group font-light" href="/signup">
                         Try it now 
                         <ArrowRight className="size-4 stroke-2 group-hover:translate-x-1 transition"/>
                     </ShinyButton>

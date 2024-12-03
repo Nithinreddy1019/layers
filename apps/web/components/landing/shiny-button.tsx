@@ -1,4 +1,5 @@
 import { cn } from "@repo/ui/lib/utils"
+import { redirect } from "next/navigation"
 
 
 
@@ -6,17 +7,27 @@ import { cn } from "@repo/ui/lib/utils"
 
 export const ShinyButton = ({
     children,
-    className
+    className,
+    href
 }: {
     children: React.ReactNode,
-    className?: string
+    className?: string,
+    href?: string
 }) => {
+
+    const handleButtonClick = () => {
+        if(!href) return;
+
+        redirect(href);
+    };
+
     return (
         <button
             className={cn(
                 "h-10 px-6 rounded-full relative font-medium bg-gradient-to-b from-[#3b0764] to-[#6b21a8] shadow-[0px_0px_12px_#7e22ce]",
                 className
             )}
+            onClick={handleButtonClick}
         >
             <div className="absolute inset-0">
                 <div className="rounded-full border border-white/20 absolute inset-0 [mask_image:linear-gradient(to_bottom,black,transparent)]"></div>

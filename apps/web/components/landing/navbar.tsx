@@ -72,7 +72,7 @@ export const Navbar = () => {
                                 <line x1="3" y1="18" x2="21" y2="18" className={cn("origin-left transition", isOpen && "-rotate-45 translate-y-1")}></line>
                             </svg>
 
-                            <ShinyButton className="hidden md:block">
+                            <ShinyButton className="hidden md:block" href="/signin">
                                 Login
                             </ShinyButton>
                         </div>
@@ -111,7 +111,7 @@ export const Navbar = () => {
                                         transition={{ duration: 0.5, ease: "easeOut" }}
                                         className="mt-2"
                                     >
-                                        <ShinyButton>
+                                        <ShinyButton href="/signin">
                                             Login
                                         </ShinyButton>
                                     </motion.div>
