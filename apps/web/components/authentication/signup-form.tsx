@@ -81,6 +81,7 @@ export const SignUpForm = () => {
                 </Button>
             </motion.div>
             
+            <div className="flex-1 justify-center flex flex-col max-w-[724px]">
             <motion.div
                 initial={{
                     opacity: 0,
@@ -93,7 +94,7 @@ export const SignUpForm = () => {
                     ease: "easeIn"
                 }}
             >
-                <CardHeader className="mt-8">
+                <CardHeader className="">
                     <CardTitle>
                         Sign-up
                     </CardTitle>
@@ -207,9 +208,10 @@ export const SignUpForm = () => {
                     </Button>
                 </motion.div>
             </CardContent>
+            </div>
 
 
-            <CardFooter className="flex-1 items-end">
+            <CardFooter className="">
                 <motion.div
                     initial={{
                         opacity: 0,

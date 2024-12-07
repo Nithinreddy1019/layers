@@ -79,7 +79,8 @@ export const SignInForm = () => {
                     </Link>
                 </Button>
             </motion.div>
-
+            
+            <div className="flex-1 flex justify-center flex-col max-w-[724px]">
             <motion.div
                 initial={{
                     opacity: 0,
@@ -92,13 +93,14 @@ export const SignInForm = () => {
                     ease: "easeIn"
                 }}
             >
-                <CardHeader className="mt-8 lg:mt-16">
+                <CardHeader className="">
                     <CardTitle>
                         Sign-in
                     </CardTitle>
                     <p>Enter your Email and password</p>
                 </CardHeader>
             </motion.div>
+            
             <CardContent className="space-y-6">
                 <Form {...form}>
                     <motion.form 
@@ -192,9 +194,9 @@ export const SignInForm = () => {
                     </Button>
                 </motion.div>
             </CardContent>
+            </div>
 
-
-            <CardFooter className="flex-1 items-end">
+            <CardFooter className="items-end">
                 <motion.div 
                     initial={{
                         opacity: 0,
