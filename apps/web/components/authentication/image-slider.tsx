@@ -84,7 +84,7 @@ export const ImageSlider = () => {
     };
 
     const slideVariants = {
-        initial: { opacity: 0.5, x: 0, y:10 },
+        initial: { opacity: 0.5, x: 0, y: 5 },
         animate: { opacity: 1, x: 0, y: 0 },
         exit: { opacity: 0, x: 0, y: -10 }
     };
