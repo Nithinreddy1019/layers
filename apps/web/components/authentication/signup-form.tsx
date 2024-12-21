@@ -28,12 +28,19 @@ import {
 import { Input } from "@repo/ui/components/ui/input";
 import { Separator } from "@repo/ui/components/ui/separator";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 
 
 
 export const SignUpForm = () => {
 
+    const [isMounted, setIsMounted] = useState(false);
+    
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
+    
     const form = useForm<z.infer<typeof SignUpSchema>>({
         resolver: zodResolver(SignUpSchema),
         defaultValues: {
@@ -43,6 +50,9 @@ export const SignUpForm = () => {
         }
     });
 
+    if (!isMounted) {
+        return null; 
+    }
 
     const onSubmit = (values: z.infer<typeof SignUpSchema>) => {
         console.log(values);

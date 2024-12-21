@@ -29,10 +29,17 @@ import {
 import { Input } from "@repo/ui/components/ui/input";
 import { Separator } from "@repo/ui/components/ui/separator";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 
 
 export const SignInForm = () => {
+    
 
+    const [isMounted, setIsMounted] = useState(false);
+    
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const form = useForm<z.infer<typeof SignInSchema>>({
         resolver: zodResolver(SignInSchema),
@@ -41,6 +48,10 @@ export const SignInForm = () => {
             password: ""
         }
     });
+
+    if (!isMounted) {
+        return null; 
+    }
 
 
     const onSubmit = (values: z.infer<typeof SignInSchema>) => {
