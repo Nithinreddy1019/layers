@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Lexend } from "next/font/google";
 import "@repo/ui/globals.css";
 import { SessionProvider } from "next-auth/react";
+import { QueryProvider } from "../components/query-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,7 +43,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} ${lexend.className}`}>
         <SessionProvider>
-          {children}
+          <QueryProvider>
+            {children}
+          </QueryProvider>
         </SessionProvider>
       </body>
     </html>

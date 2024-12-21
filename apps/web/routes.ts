@@ -1,5 +1,6 @@
 export const publicRoutes = [
-    "/"
+    "/",
+    "/api/authentication/hello"
 ]
 
 
