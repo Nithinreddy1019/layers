@@ -29,10 +29,14 @@ import { Input } from "@repo/ui/components/ui/input";
 import { Separator } from "@repo/ui/components/ui/separator";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { useRegister } from "../../api/auth/use-register";
+import { BiLoader } from "react-icons/bi";
 
 
 
 export const SignUpForm = () => {
+
+    const { mutate, isPending } = useRegister();
 
     const [isMounted, setIsMounted] = useState(false);
     
@@ -56,6 +60,9 @@ export const SignUpForm = () => {
 
     const onSubmit = (values: z.infer<typeof SignUpSchema>) => {
         console.log(values);
+        mutate({
+            json: {...values}
+        });
     }
 
     return (
@@ -140,6 +147,7 @@ export const SignUpForm = () => {
                                                 {...field}
                                                 type="text"
                                                 placeholder="Username"
+                                                disabled={isPending}
                                             />
                                         </FormControl>
                                         <FormMessage  className="text-xs"/>
@@ -158,6 +166,7 @@ export const SignUpForm = () => {
                                                 {...field}
                                                 type="email"
                                                 placeholder="Email"
+                                                disabled={isPending}
                                             />
                                         </FormControl>
                                         <FormMessage  className="text-xs"/>
@@ -176,6 +185,7 @@ export const SignUpForm = () => {
                                                 {...field}
                                                 type="password"
                                                 placeholder="Password"
+                                                disabled={isPending}
                                             />
                                         </FormControl>
                                         <FormMessage className="text-xs"/>
@@ -188,8 +198,16 @@ export const SignUpForm = () => {
                             className="w-full" 
                             type="submit"
                             size="sm"
+                            disabled={isPending}
                         >
-                            Sign-up
+                            {isPending ? (
+                                <div className="flex items-center gap-x-2">
+                                    <BiLoader className="animate-spin"/>
+                                    Signing up...
+                                </div>
+                            ) : (
+                                <p>Sign up</p>
+                            )}
                         </Button>
                     </motion.form>
                 </Form>
