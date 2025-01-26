@@ -12,7 +12,7 @@ import { ArrowLeft } from "lucide-react"
 import { FcGoogle } from "react-icons/fc";
 
 
-import { useForm, zodResolver } from "@repo/ui/hooks/form-hooks";
+import { toast, useForm, zodResolver } from "@repo/ui/hooks/form-hooks";
 
 import Image from "next/image"
 import Link from "next/link"
@@ -30,9 +30,13 @@ import { Input } from "@repo/ui/components/ui/input";
 import { Separator } from "@repo/ui/components/ui/separator";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { useLogin } from "../../api/auth/use-login";
+import { BiLoader } from "react-icons/bi";
 
 
 export const SignInForm = () => {
+
+    const { mutate, isPending } = useLogin();
     
 
     const [isMounted, setIsMounted] = useState(false);
@@ -55,7 +59,11 @@ export const SignInForm = () => {
 
 
     const onSubmit = (values: z.infer<typeof SignInSchema>) => {
-        console.log(values);
+        mutate({
+            json: {
+                ...values
+            }
+        });
     }
 
     return (
@@ -140,6 +148,7 @@ export const SignInForm = () => {
                                                 {...field}
                                                 type="email"
                                                 placeholder="Email"
+                                                disabled={isPending}
                                             />
                                         </FormControl>
                                         <FormMessage  className="text-xs"/>
@@ -158,6 +167,7 @@ export const SignInForm = () => {
                                                 {...field}
                                                 type="password"
                                                 placeholder="Password"
+                                                disabled={isPending}
                                             />
                                         </FormControl>
                                         <FormMessage className="text-xs"/>
@@ -175,8 +185,16 @@ export const SignInForm = () => {
                             className="w-full" 
                             type="submit"
                             size="sm"
+                            disabled={isPending}
                         >
-                            Sign-in
+                            {isPending ? (
+                                <div className="flex items-center gap-2">
+                                    <BiLoader className="animate-spin"/>
+                                    Signing in...
+                                </div>
+                            ) : (
+                                <p>Sign in</p>
+                            )}
                         </Button>
                     </motion.form>
                 </Form>
