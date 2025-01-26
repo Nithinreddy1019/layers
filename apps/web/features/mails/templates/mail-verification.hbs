@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container { 
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .button {
+            background-color: #182918;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, {{username}}!</h2>
+        <p>Thank you for signing up for Layers. Please verify your email address by clicking the button below:</p>
+        <a href="{{verificationLink}}" class="button">Verify Email</a>
+        <p>If you didn't create an account, you can safely ignore this email.</p>
+    </div>
+</body>
+</html>

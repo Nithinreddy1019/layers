@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container { 
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .code {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            letter-spacing: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Authentication Code</h2>
+        <p>Here's your 2FA code:</p>
+        <div class="code">{{code}}</div>
+        <p>This code will expire in {{expiryTime}}.</p>
+        <p>If you didn't request this code, please secure your account immediately.</p>
+    </div>
+</body>
+</html>
