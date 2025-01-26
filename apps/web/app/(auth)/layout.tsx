@@ -9,7 +9,7 @@ const AuthLayout = ({
 }) => {
     return (
         <div className="w-full ">
-            <div className="grid lg:grid-cols-2 ">
+            <div className="grid lg:grid-cols-2">
                 <div>
                     {children}
                 </div>

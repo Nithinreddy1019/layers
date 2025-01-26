@@ -4,6 +4,8 @@ import * as z from "zod";
 import * as bcrypt from "bcryptjs";
 import { db } from "@repo/db";
 import { SignInSchema, SignUpSchema } from "../../../schemas/authentication/schemas";
+import EmailServiceSingleton from "../../../features/mails/email-service";
+import { generateVerificationToken } from "../../../features/mails/tokens";
 
 const app = new Hono()
     .get("/hello", 
@@ -23,6 +25,18 @@ const app = new Hono()
             if(!emailExists) {
                 return c.json({ error: "Email does not exist"}, 411)
             };
+
+            if(!emailExists.emailVerified) {
+                const verificationToken = await generateVerificationToken(email);
+
+                await EmailServiceSingleton.sendVerificationEmail({
+                    username: emailExists.name as string,
+                    verificationToken: verificationToken,
+                    email: email
+                });
+
+                return c.json({ error: "Email not verified, verification email sent"}, 401)
+            }
 
             const passwordMatch = await bcrypt.compare(password, emailExists.password as string);
             if(!passwordMatch) {
@@ -59,10 +73,72 @@ const app = new Hono()
                     }
                 });
 
+                const verificationToken = await generateVerificationToken(email);
+
+                await EmailServiceSingleton.sendVerificationEmail({
+                    username: username,
+                    verificationToken: verificationToken,
+                    email: email
+                });
+
                 return c.json({ success: "ok"}, 200);
             } catch (error) {
                 return c.json({ error: "Something went wrong"}, 500)                
             }
+        }
+    )
+    .post("/verify_email",
+        zValidator("json", z.object({
+            token: z.string()
+        })),
+        async (c) => {
+            const { token } = c.req.valid("json");
+
+            if(!token) {
+                return c.json({ error: "Token not present" }, 400)
+            };
+
+            const existingToken = await db.verificationToken.findUnique({
+                where: {
+                    token
+                }
+            });
+            if(!existingToken) {
+                return c.json({ error: "Token does not exist" }, 400) 
+            };
+
+            const existingUser = await db.user.findUnique({
+                where: {
+                    email: existingToken.email
+                }
+            });
+            if(!existingUser) {
+                return c.json({ error: "User does not exist" }, 400)
+            };
+
+            const tokenHasExpired = new Date(existingToken.expires) < new Date();
+            if(tokenHasExpired) {
+                return c.json({ error: "Token has expired" }, 401)
+            };
+
+            await db.user.update({
+                where: {
+                    id: existingUser.id
+                },
+                data: {
+                    emailVerified: new Date(),
+                    email: existingToken.email
+                }
+            });
+
+            await db.verificationToken.delete({
+                where: {
+                    id: existingToken.id
+                }
+            });
+
+            return c.json({ success: "Email verified successfully" }, 200)
+
         }
     )
 

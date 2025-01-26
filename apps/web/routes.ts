@@ -1,6 +1,6 @@
 export const publicRoutes = [
     "/",
-    "/api/authentication/hello"
+    "/verification"
 ]
 
 
@@ -13,4 +13,4 @@ export const authenticationRoutes = [
 export const authenticationApiRoutes = "/api/auth"
 
 
-export const DEFAULT_LOGIN_REDIRECT = "/dashboard"
+export const DEFAULT_LOGIN_REDIRECT = "/home"
