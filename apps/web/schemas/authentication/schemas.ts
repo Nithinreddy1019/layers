@@ -30,3 +30,17 @@ export const ForgotPasswordSchema = z.object({
         message: "Email is required"
     })
 });
+
+
+export const ResetPasswordSchema = z.object({
+    newPassword: z.string({
+        message: "Password is required"
+    }).min(6, {
+        message: "Minimun 6 characters are required"
+    }),
+    confirmPassword: z.string({
+        message: "Password is required"
+    }).min(6, {
+        message: "Minimun 6 characters are required"
+    })
+})

@@ -3,7 +3,7 @@ import { zValidator } from "@hono/zod-validator";
 import * as z from "zod";
 import * as bcrypt from "bcryptjs";
 import { db } from "@repo/db";
-import { ForgotPasswordSchema, SignInSchema, SignUpSchema } from "../../../schemas/authentication/schemas";
+import { ForgotPasswordSchema, ResetPasswordSchema, SignInSchema, SignUpSchema } from "../../../schemas/authentication/schemas";
 import EmailServiceSingleton from "../../../features/mails/email-service";
 import { generateVerificationToken } from "../../../features/mails/tokens";
 
@@ -172,6 +172,85 @@ const app = new Hono()
                 return c.json({ error: "Something went wrong" }, 500);
             }
 
+        }
+    )
+    .patch("/reset",
+        zValidator("json", ResetPasswordSchema),
+        zValidator("query", z.object({
+            token: z.string()
+        })),
+        async (c) => {
+            const { newPassword, confirmPassword } = c.req.valid("json");
+            const { token } = c.req.valid("query");
+
+            if(newPassword !== confirmPassword) {
+                return c.json({ error: "Passwords do not match "}, 400)
+            };
+
+            if(!token) {
+                return c.json({ error: "Token not present" }, 400)
+            };
+
+            const existingToken = await db.verificationToken.findUnique({
+                where: {
+                    token
+                }
+            });
+            if(!existingToken) {
+                return c.json({ error: "Token does not exist" }, 400) 
+            };
+
+            const existingUser = await db.user.findUnique({
+                where: {
+                    email: existingToken.email
+                }
+            });
+            if(!existingUser) {
+                return c.json({ error: "User does not exist" }, 400)
+            };
+
+            const tokenHasExpired = new Date(existingToken.expires) < new Date();
+            if(tokenHasExpired) {
+                return c.json({ error: "Token has expired" }, 401)
+            };
+
+            const password = await bcrypt.hash(newPassword , 10);
+
+            try {
+
+                if(!existingUser.emailVerified) {
+                    await db.user.update({
+                        where: {
+                            id: existingUser.id
+                        },
+                        data: {
+                            emailVerified: new Date(),
+                            email: existingToken.email,
+                            password: password
+                        }
+                    });
+                } else {
+                    await db.user.update({
+                        where: {
+                            id: existingUser.id
+                        },
+                        data: {
+                            email: existingToken.email,
+                            password: password
+                        }
+                    });
+                }
+    
+                await db.verificationToken.delete({
+                    where: {
+                        id: existingToken.id
+                    }
+                });
+            } catch (error) {
+                return c.json({ error: "Something went wrong "}, 500)
+            };
+
+            return c.json({ success: "Password updated successfully "}, 200);
         }
     )
 
