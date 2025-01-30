@@ -23,3 +23,10 @@ export const SignUpSchema = z.object({
         message: "Minimun 6 characters are required"
     })
 });
+
+
+export const ForgotPasswordSchema = z.object({
+    email: z.string().email({
+        message: "Email is required"
+    })
+});

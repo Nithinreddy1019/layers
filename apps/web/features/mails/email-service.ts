@@ -62,7 +62,7 @@ class EmailService {
 
         try {
             const template = await this.getTemplate(templateName);
-            
+
             const html = template(data);
 
             const info = await this.transporter.sendMail({
@@ -100,6 +100,31 @@ class EmailService {
             data: {
                 username: username,
                 verificationLink: `${process.env.NEXT_PUBLIC_APP_URL}/verification?token=${verificationToken}`
+            }
+        });
+    };
+
+
+    // Sending Password reset email
+    async sendPasswordResetEmail({
+        email,
+        username,
+        verificationToken,
+        expiryTime
+    }: {
+        email: string,
+        username: string,
+        verificationToken: string,
+        expiryTime: string
+    }){
+        return this.sendTemplatedEmail({
+            to: email,
+            subject: "Reset your password",
+            templateName: "password-reset",
+            data: {
+                username: username,
+                expiryTime: expiryTime,
+                resetLink: `${process.env.NEXT_PUBLIC_APP_URL}/reset?token=${verificationToken}`
             }
         });
     };

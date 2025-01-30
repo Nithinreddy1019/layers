@@ -80,13 +80,13 @@ export const EmailVerification = () => {
                 </Button>
             </motion.div>
 
-            <div className="flex-1 flex flex-col w-full justify-center gap-y-6 ">
-                <div className="space-y-2.5">
+            <div className="flex-1 flex flex-col w-full justify-center items-center lg:items-start gap-y-6 ">
+                <div className="space-y-2.5 flex flex-col items-center lg:items-start">
                     <h1 className="text-2xl font-semibold">Email Verification</h1>
                     <p>Verify your email</p>
                 </div>
 
-                <div className="flex flex-col gap-4 w-full">
+                <div className="flex flex-col gap-4 w-full items-center lg:items-start">
                     
                     {(!error && !success) && (
                         <>

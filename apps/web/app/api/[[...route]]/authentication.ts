@@ -3,7 +3,7 @@ import { zValidator } from "@hono/zod-validator";
 import * as z from "zod";
 import * as bcrypt from "bcryptjs";
 import { db } from "@repo/db";
-import { SignInSchema, SignUpSchema } from "../../../schemas/authentication/schemas";
+import { ForgotPasswordSchema, SignInSchema, SignUpSchema } from "../../../schemas/authentication/schemas";
 import EmailServiceSingleton from "../../../features/mails/email-service";
 import { generateVerificationToken } from "../../../features/mails/tokens";
 
@@ -138,6 +138,39 @@ const app = new Hono()
             });
 
             return c.json({ success: "Email verified successfully" }, 200)
+
+        }
+    )
+    .post("/forgot_password",
+        zValidator("json", ForgotPasswordSchema),
+        async (c) => {
+
+            const { email } = c.req.valid("json");
+
+            const existingUser = await db.user.findUnique({
+                where: {
+                    email: email
+                }
+            });
+            if(!existingUser) {
+                return c.json({ error: "User does not exist" }, 400)
+            };
+
+
+            try {
+                const verificationToken = await generateVerificationToken(email);
+
+                await EmailServiceSingleton.sendPasswordResetEmail({
+                    email: email,
+                    username: existingUser.name as string,
+                    expiryTime: "1 hour",
+                    verificationToken: verificationToken
+                });
+                
+                return c.json({ success: "Reset link sent to email"}, 200)
+            } catch (error) {   
+                return c.json({ error: "Something went wrong" }, 500);
+            }
 
         }
     )

@@ -1,3 +1,5 @@
+"use server"
+
 import { db } from "@repo/db";
 import { v4 as uuidv4 } from "uuid";
 
@@ -31,4 +33,5 @@ export const generateVerificationToken = async (email: string) => {
     const verificationToken = data.token;
     return verificationToken;
 
-}
+};
+
