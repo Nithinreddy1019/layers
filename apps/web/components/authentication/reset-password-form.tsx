@@ -57,7 +57,7 @@ export const ResetPasswordForm = () => {
             }
         }, {
             onSuccess: () => {
-                router.push("/sign-in")
+                router.push("/signin")
             }
         })
     }
