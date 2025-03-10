@@ -35,3 +35,36 @@ export const generateVerificationToken = async (email: string) => {
 
 };
 
+
+
+
+export const generateTwoFactorToken = async (email: string) => {
+    const token = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = new Date(new Date().getTime() + 900 * 1000);
+
+    const tokenExists = await db.twoFactorToken.findUnique({
+        where: {
+            token
+        }
+    });
+
+    if(tokenExists) {
+        await db.twoFactorToken.delete({
+            where: {
+                token: token
+            }
+        });
+    };
+
+    const data = await db.twoFactorToken.create({
+        data: {
+            email,
+            token,
+            expires
+        }
+    });
+
+    const twoFactorToken = data.token;
+    return twoFactorToken; 
+};
+

@@ -77,6 +77,7 @@ class EmailService {
             return { success: true, messageId: info.messageId};
         } catch (error) {
             console.log(process.cwd());
+            console.log(error)
             throw new Error("Error sending email")
         };
 
@@ -128,6 +129,27 @@ class EmailService {
             }
         });
     };
+
+    // Sending 2FA
+    async send2FACode({
+        email,
+        twoFactorCode,
+        expiryTime
+    }: {
+        email: string,
+        twoFactorCode: string,
+        expiryTime: string
+    }) {
+        return this.sendTemplatedEmail({
+            to: email,
+            subject: 'Your 2FA Code',
+            templateName: 'twofactor-code',
+            data: {
+                twoFactorCode,
+                expiryTime: expiryTime
+            }
+        });
+    }
     
 }
 
